@@ -1,0 +1,145 @@
+<html>
+
+<head>
+    <title></title>
+    <style>
+        .header {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            display: inline-block;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+        }
+
+        select {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        div {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="header">
+        <h1></h1>
+    </div>
+    <div class="content">
+
+        <form>
+            <label for="flatNum">מספר הדירה</label>
+            <select id="flatNum" name="flatNum">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+                <option>24</option>
+                <option>25</option>
+                <option>26</option>
+                <option>27</option>
+                <option>28</option>
+                <option>29</option>
+                <option>30</option>
+                <option>31</option>
+                <option>32</option>
+                <option>33</option>
+                <option>34</option>
+                <option>35</option>
+                <option>36</option>
+                <option>37</option>
+                <option>38</option>
+                <option>39</option>
+                <option>40</option>
+                <option>41</option>
+                <option>42</option>
+                <option>43</option>
+                <option>44</option>
+                <option>45</option>
+            </select>
+            <br />
+            <button type="button" onclick="calcCode()">
+                חשב קוד
+            </button>
+            <br />
+            <div class="commCodeHide" style="display: none;">
+                <span> קוד לצלצול הוא <span id="commCode"></span></span>
+            </div>
+        </form>
+
+    </div>
+    <script>
+        function calcCode(num) {
+            document.getElementById("commCode").innerHTML = "";
+            //show the div
+            document.getElementsByClassName("commCodeHide")[0].style.display = "block";
+            var num = parseInt(document.getElementById("flatNum").value, 10)
+           
+            var commCode = convertFlatNumber(num);
+            document.getElementById("commCode").innerHTML = commCode;
+        }
+
+
+        function convertFlatNumber(flatNum) {
+            // Input validation
+            if (!Number.isInteger(flatNum) || flatNum < 1 || flatNum > 45) {
+                throw new Error('Invalid flat number. Must be between 1 and 45');
+            }
+
+            // Define entrances in order
+            const ENTRANCES = [63, 65, 67];
+
+            // Calculate which group of 6 we're in (each group consists of 2 flats per entrance)
+            const group = Math.floor((flatNum - 1) / 6);
+
+            // Calculate position within the group (0-5)
+            const positionInGroup = (flatNum - 1) % 6;
+
+            // Determine entrance index (0-2) and flat number within entrance
+            const entranceIndex = Math.floor(positionInGroup / 2);
+            const flatInEntrance = (group * 2) + (positionInGroup % 2) + 1;
+
+            // Format the final number: entrance + two-digit flat number
+            return parseInt(`${ENTRANCES[entranceIndex]}${flatInEntrance.toString().padStart(2, '0')}`);
+        }
+    </script>
+</body>
+
+</html>
