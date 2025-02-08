@@ -1,8 +1,14 @@
 <html>
 
 <head>
-    <title></title>
+    <title>
+        ממיר מספר דירה לקוד לאינטרקום
+    </title>
     <style>
+        body{
+            direction: rtl; font-family: Arial, Helvetica, sans-serif;
+        }
+        .bigtext{font-size: 20px;}
         .header {
             text-align: center;
             background-color: #f1f1f1;
@@ -24,7 +30,7 @@
         }
 
         select {
-            width: 100px;
+            min-width: 250px;
             margin-bottom: 10px;
         }
 
@@ -35,72 +41,41 @@
         div {
             margin-top: 10px;
         }
+        .commCode{
+            font-size: 18px;font-weight: bold;
+        }
     </style>
 
 </head>
 
 <body>
     <div class="header">
-        <h1></h1>
+        <h1>
+            ממיר מספר דירה לקוד לאינטרקום
+        </h1>
     </div>
     <div class="content">
 
         <form>
-            <label for="flatNum">מספר הדירה</label>
-            <select id="flatNum" name="flatNum">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
-                <option>13</option>
-                <option>14</option>
-                <option>15</option>
-                <option>16</option>
-                <option>17</option>
-                <option>18</option>
-                <option>19</option>
-                <option>20</option>
-                <option>21</option>
-                <option>22</option>
-                <option>23</option>
-                <option>24</option>
-                <option>25</option>
-                <option>26</option>
-                <option>27</option>
-                <option>28</option>
-                <option>29</option>
-                <option>30</option>
-                <option>31</option>
-                <option>32</option>
-                <option>33</option>
-                <option>34</option>
-                <option>35</option>
-                <option>36</option>
-                <option>37</option>
-                <option>38</option>
-                <option>39</option>
-                <option>40</option>
-                <option>41</option>
-                <option>42</option>
-                <option>43</option>
-                <option>44</option>
-                <option>45</option>
+            <select id="flatNum" name="flatNum" class="bigtext" onchange="calcCode()">
+                <option value="0">בחר מספר דירה</option>
             </select>
+            <script>
+                const flatNumSelect = document.getElementById('flatNum');
+                for (let i = 1; i <= 45; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.text = i;
+                    flatNumSelect.appendChild(option);
+                }
+            </script>
             <br />
-            <button type="button" onclick="calcCode()">
+            <button type="button" onclick="calcCode()" class="bigtext">
                 חשב קוד
             </button>
-            <br />
-            <div class="commCodeHide" style="display: none;">
-                <span> קוד לצלצול הוא <span id="commCode"></span></span>
+            <br /><br />
+            <div class="commCodeHide bigtext" style="display: none;">
+                <span> קוד לצלצול הוא <span id="commCode" class="commCode"></span></span>
             </div>
         </form>
 
@@ -108,6 +83,11 @@
     <script>
         function calcCode(num) {
             document.getElementById("commCode").innerHTML = "";
+            //remove the first option from the list if it's value is 0
+            if (document.getElementById("flatNum").options[0].value == 0) {
+                document.getElementById("flatNum").remove(0);
+            }
+            
             //show the div
             document.getElementsByClassName("commCodeHide")[0].style.display = "block";
             var num = parseInt(document.getElementById("flatNum").value, 10)
