@@ -1,125 +1,187 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="he">
 <head>
-    <title>
-        ממיר מספר דירה לקוד לאינטרקום
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ממיר מספר דירה לקוד לחיוג באינטרקום
     </title>
     <style>
-        body{
-            direction: rtl; font-family: Arial, Helvetica, sans-serif;
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .bigtext{font-size: 20px;}
+
+        body {
+            direction: rtl;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+        }
+
+        /* Header styles */
         .header {
             text-align: center;
-            background-color: #f1f1f1;
-            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        .header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Content styles */
         .content {
             text-align: center;
-            padding: 20px;
+            padding: 2rem 1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
+        /* Form styles */
         form {
-            display: inline-block;
-            text-align: center;
-        }
-
-        label {
-            display: block;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         select {
-            min-width: 250px;
-            margin-bottom: 10px;
+            width: 100%;
+            max-width: 300px;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
         }
 
         button {
-            margin-top: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            max-width: 300px;
         }
 
-        div {
-            margin-top: 10px;
+        button:hover {
+            background-color: #218838;
         }
-        .commCode{
-            font-size: 18px;font-weight: bold;
+
+        /* Result styles */
+        .commCodeHide {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .commCode {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 0.5rem;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            form {
+                padding: 1.5rem 1rem;
+            }
+
+            select, button {
+                font-size: 1.3rem;
+            }
+
+            .commCodeHide {
+                font-size: 1.3rem;
+            }
+
+            .commCode {
+                font-size: 2.2rem;
+            }
         }
     </style>
-
 </head>
-
 <body>
     <div class="header">
         <h1>
-            ממיר מספר דירה לקוד לאינטרקום
+            ממיר מספר דירה לקוד לחיוג באינטרקום
         </h1>
     </div>
     <div class="content">
-
         <form>
-            <select id="flatNum" name="flatNum" class="bigtext" onchange="calcCode()">
+            <select id="flatNum" name="flatNum" onchange="calcCode()">
                 <option value="0">בחר מספר דירה</option>
             </select>
-            <script>
-                const flatNumSelect = document.getElementById('flatNum');
-                for (let i = 1; i <= 45; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.text = i;
-                    flatNumSelect.appendChild(option);
-                }
-            </script>
-            <br />
-            <button type="button" onclick="calcCode()" class="bigtext">
-                חשב קוד
-            </button>
-            <br /><br />
-            <div class="commCodeHide bigtext" style="display: none;">
-                <span> קוד לצלצול הוא <span id="commCode" class="commCode"></span></span>
+            <button type="button" onclick="calcCode()">הצג קוד</button>
+            <div class="commCodeHide" style="display: none;">
+                <span>לחיוג לדירה : <span id="commCode" class="commCode"></span></span>
             </div>
         </form>
-
     </div>
+
     <script>
-        function calcCode(num) {
-            document.getElementById("commCode").innerHTML = "";
-            //remove the first option from the list if it's value is 0
-            if (document.getElementById("flatNum").options[0].value == 0) {
-                document.getElementById("flatNum").remove(0);
-            }
-            
-            //show the div
-            document.getElementsByClassName("commCodeHide")[0].style.display = "block";
-            var num = parseInt(document.getElementById("flatNum").value, 10)
-           
-            var commCode = convertFlatNumber(num);
-            document.getElementById("commCode").innerHTML = commCode;
+        // Initialize flat numbers
+        const flatNumSelect = document.getElementById('flatNum');
+        for (let i = 1; i <= 45; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            flatNumSelect.appendChild(option);
         }
 
+        function calcCode() {
+            const commCodeElement = document.getElementById("commCode");
+            commCodeElement.innerHTML = "";
+            
+            const selectElement = document.getElementById("flatNum");
+            
+            // Remove the initial placeholder option
+            if (selectElement.options[0].value === "0") {
+                selectElement.remove(0);
+            }
+            
+            // Show the result div
+            document.querySelector(".commCodeHide").style.display = "block";
+            
+            // Calculate and display the code
+            const flatNum = parseInt(selectElement.value, 10);
+            const commCode = convertFlatNumber(flatNum);
+            commCodeElement.innerHTML = commCode;
+        }
 
         function convertFlatNumber(flatNum) {
-            // Input validation
             if (!Number.isInteger(flatNum) || flatNum < 1 || flatNum > 45) {
-                throw new Error('Invalid flat number. Must be between 1 and 45');
+                throw new Error('מספר דירה לא תקין. חייב להיות בין 1 ל-45');
             }
 
-            // Define entrances in order
             const ENTRANCES = [63, 65, 67];
-
-            // Calculate which group of 6 we're in (each group consists of 2 flats per entrance)
             const group = Math.floor((flatNum - 1) / 6);
-
-            // Calculate position within the group (0-5)
             const positionInGroup = (flatNum - 1) % 6;
-
-            // Determine entrance index (0-2) and flat number within entrance
             const entranceIndex = Math.floor(positionInGroup / 2);
             const flatInEntrance = (group * 2) + (positionInGroup % 2) + 1;
 
-            // Format the final number: entrance + two-digit flat number
             return parseInt(`${ENTRANCES[entranceIndex]}${flatInEntrance.toString().padStart(2, '0')}`);
         }
     </script>
 </body>
-
 </html>
